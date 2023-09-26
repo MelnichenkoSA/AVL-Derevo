@@ -11,14 +11,14 @@ namespace AVL_Derevo
         public int Data { get; set; }
         public Node Left { get; set; }
         public Node Right { get; set; }
+        public int Height { get; set; }
 
         public Node(int data)
         {
             Data = data;
             Left = null;
             Right = null;
+            Height = 1;
         }
-         
-
     }
 }
