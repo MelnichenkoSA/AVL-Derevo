@@ -30,7 +30,7 @@
             {
                 root.Right = InsertRec(root.Right, data);
             }
-
+            root.Height = 1 + Math.Max(Height(root.Left), Height(root.Right));
             return root;
         }
         public void Delete(int data)
@@ -42,7 +42,7 @@
         {
             if (root == null)
             {
-                return root;
+                return root; 
             }
 
             if (data < root.Data)
@@ -67,7 +67,7 @@
                 root.Data = MinValue(root.Right);
                 root.Right = DeleteRec(root.Right, root.Data);
             }
-
+            root.Height = 1 + Math.Max(Height(root.Left), Height(root.Right));
             return root;
         }
 
@@ -101,16 +101,14 @@
 
             return FindRec(root.Right, data);
         }
-        // Метод для определения высоты узла
+
         private int Height(Node node)
         {
             if (node == null)
                 return 0;
 
-            return 1 + Math.Max(Height(node.Left), Height(node.Right));
+            return node.Height;
         }
-
-        // Метод для вычисления баланс-фактора для узла
         private int BalanceFactor(Node node)
         {
             if (node == null)
@@ -119,7 +117,7 @@
             return Height(node.Left) - Height(node.Right);
         }
 
-        // Метод для балансировки дерева
+
         public void Balance()
         {
             Root = BalanceRec(Root);
@@ -130,50 +128,39 @@
             if (root == null)
                 return null;
 
-            // Вычисляем баланс-фактор для текущего узла
             int balanceFactor = BalanceFactor(root);
 
-            // Если баланс-фактор > 1, дерево несбалансировано влево
             if (balanceFactor > 1)
             {
-                // Определяем, какой вращение применить (LL или LR)
                 if (BalanceFactor(root.Left) >= 0)
                 {
-                    // LL - левое вращение
                     return RightRotate(root);
                 }
                 else
                 {
-                    // LR - левое затем правое вращение
                     root.Left = LeftRotate(root.Left);
                     return RightRotate(root);
                 }
             }
-            // Если баланс-фактор < -1, дерево несбалансировано вправо
             else if (balanceFactor < -1)
             {
-                // Определяем, какой вращение применить (RR или RL)
                 if (BalanceFactor(root.Right) <= 0)
                 {
-                    // RR - правое вращение
                     return LeftRotate(root);
                 }
                 else
                 {
-                    // RL - правое затем левое вращение
                     root.Right = RightRotate(root.Right);
                     return LeftRotate(root);
                 }
             }
 
-            // Если баланс-фактор в допустимом диапазоне, рекурсивно балансируем поддеревья
             root.Left = BalanceRec(root.Left);
             root.Right = BalanceRec(root.Right);
-
+            root.Height = 1 + Math.Max(Height(root.Left), Height(root.Right));
             return root;
         }
 
-        // Левое вращение
         private Node LeftRotate(Node x)
         {
             Node y = x.Right;
@@ -185,7 +172,6 @@
             return y;
         }
 
-        // Правое вращение
         private Node RightRotate(Node y)
         {
             Node x = y.Left;
